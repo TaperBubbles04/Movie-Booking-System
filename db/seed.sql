@@ -8,6 +8,8 @@
 
 BEGIN;
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- ----------------------------------------------------------------------------
 -- 0. Safety Schema Guard (Creates the 12 tables in 3NF if not already created)
 -- ----------------------------------------------------------------------------
@@ -373,22 +375,24 @@ ORDER BY sh.show_id, cat.seat_category;
 -- ----------------------------------------------------------------------------
 INSERT INTO Customer (name, email, phone, password_hash, role, created_at) VALUES
     -- 1: Admin Account
-    ('Yashvant ATK', 'admin@cinebook.in', '9025106578', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'ADMIN', '2026-10-20 09:00:00+05:30'),
+    ('Yashvant ATK', 'admin@cinebook.in', '9025106578', crypt('password123', gen_salt('bf', 10)), 'ADMIN', '2026-10-20 09:00:00+05:30'),
     -- 2..13: Customers with bookings
-    ('Tharanesh R', 'tharanesh@cinebook.in', '9840112233', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-21 10:15:00+05:30'),
-    ('Mohit Sharma', 'mohit@cinebook.in', '9840223344', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-21 11:30:00+05:30'),
-    ('Ananya Iyer', 'ananya.iyer@gmail.com', '9840334455', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-22 14:20:00+05:30'),
-    ('Karthik Subramanian', 'karthik.s@gmail.com', '9840445566', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-22 16:45:00+05:30'),
-    ('Priya Nair', 'priya.nair@gmail.com', '9840556677', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-23 12:10:00+05:30'),
-    ('Rohan Deshmukh', 'rohan.d@gmail.com', '9840667788', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-23 18:05:00+05:30'),
-    ('Divya Menon', 'divya.menon@gmail.com', '9840778899', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-24 09:40:00+05:30'),
-    ('Arjun Reddy', 'arjun.reddy@gmail.com', '9840889900', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-24 15:30:00+05:30'),
-    ('Sneha Rao', 'sneha.rao@gmail.com', '9840990011', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-25 11:00:00+05:30'),
-    ('Vikramaditya V', 'vikram.v@gmail.com', '9841001122', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-25 17:25:00+05:30'),
-    ('Neha Gupta', 'neha.gupta@gmail.com', '9841112233', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-26 13:50:00+05:30'),
-    ('Siddharth Malhotra', 'sid.m@gmail.com', '9841223344', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-26 19:15:00+05:30'),
+    ('Tharanesh R', 'tharanesh@cinebook.in', '9840112233', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-21 10:15:00+05:30'),
+    ('Mohit Sharma', 'mohit@cinebook.in', '9840223344', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-21 11:30:00+05:30'),
+    ('Ananya Iyer', 'ananya.iyer@gmail.com', '9840334455', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-22 14:20:00+05:30'),
+    ('Karthik Subramanian', 'karthik.s@gmail.com', '9840445566', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-22 16:45:00+05:30'),
+    ('Priya Nair', 'priya.nair@gmail.com', '9840556677', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-23 12:10:00+05:30'),
+    ('Rohan Deshmukh', 'rohan.d@gmail.com', '9840667788', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-23 18:05:00+05:30'),
+    ('Divya Menon', 'divya.menon@gmail.com', '9840778899', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-24 09:40:00+05:30'),
+    ('Arjun Reddy', 'arjun.reddy@gmail.com', '9840889900', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-24 15:30:00+05:30'),
+    ('Sneha Rao', 'sneha.rao@gmail.com', '9840990011', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-25 11:00:00+05:30'),
+    ('Vikramaditya V', 'vikram.v@gmail.com', '9841001122', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-25 17:25:00+05:30'),
+    ('Neha Gupta', 'neha.gupta@gmail.com', '9841112233', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-26 13:50:00+05:30'),
+    ('Siddharth Malhotra', 'sid.m@gmail.com', '9841223344', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-26 19:15:00+05:30'),
     -- 14: Customer who NEVER books (powers Query #8 NOT EXISTS / NOT IN subquery)
-    ('Meera Krishnan', 'meera.krishnan@gmail.com', '9841334455', '$2b$12$KIX/8b2e2zF5x9m7L6v4uO1y2Q3w4E5r6T7y8U9i0O1p2A3s4D5f6', 'CUSTOMER', '2026-10-27 10:00:00+05:30');
+    ('Meera Krishnan', 'meera.krishnan@gmail.com', '9841334455', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-27 10:00:00+05:30'),
+    -- 15: Tharanesh's test account from README/commit message (also never booked initially)
+    ('Test Customer', 'test@example.com', '9841445566', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-27 11:00:00+05:30');
 
 -- ----------------------------------------------------------------------------
 -- 11. Booking (32 rows: 27 CONFIRMED, 5 CANCELLED across 7 days)

@@ -578,6 +578,6 @@
 |------|------|----------|------|
 | Backend (Tharanesh) | | ☐ | |
 | Frontend (Mohit) | | ☐ | |
-| Admin/Data (ATK) | | ☐ | |
+| Admin/Data (ATK) | Yashvant A T K | ☑ | 2026-10-31 |
 
 ---
