@@ -1,59 +1,81 @@
 {% extends "base.html" %}
-
-{% block title %}{{ movie.title }} - CineBook{% endblock %}
+{% from "partials/_macros.html" import poster, runtime, hhmm, iso with context %}
+{% block title %}{{ movie.title }}{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-xl shadow-md overflow-hidden">
-    <div class="md:flex">
-        <div class="md:w-1/3">
-            {% if movie.poster_url %}
-            <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="w-full h-full object-cover">
-            {% else %}
-            <div class="w-full h-96 bg-gray-200 flex items-center justify-center">
-                <i class="fas fa-film text-gray-400 text-6xl"></i>
-            </div>
-            {% endif %}
-        </div>
-        <div class="md:w-2/3 p-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ movie.title }}</h1>
-            <div class="flex flex-wrap gap-4 text-gray-600 mb-4">
-                <span>{{ movie.language }}</span>
-                <span>{{ movie.certificate }}</span>
-                <span>{{ movie.duration_min }} min</span>
-                {% if movie.release_date %}
-                <span>Released: {{ movie.release_date }}</span>
-                {% endif %}
-                {% if movie.rating %}
-                <span class="text-yellow-600"><i class="fas fa-star"></i> {{ movie.rating }}/10</span>
-                {% endif %}
-            </div>
-            <div class="mb-4">
-                {% for genre in movie.genres %}
-                <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm mr-2">{{ genre }}</span>
-                {% endfor %}
-            </div>
-            <p class="text-gray-700 mb-6">{{ movie.description }}</p>
-            
-            {% if shows %}
-            <div class="border-t pt-6">
-                <h2 class="text-xl font-semibold mb-4">Showtimes</h2>
-                <div class="space-y-3">
-                    {% for show in shows %}
-                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div>
-                            <div class="font-medium">{{ show.theatre_name }} - {{ show.screen_name }} ({{ show.screen_type }})</div>
-                            <div class="text-sm text-gray-500">{{ show.city }} | {{ show.show_date }} | {{ show.start_time }} - {{ show.end_time }}</div>
-                        </div>
-                        <a href="/shows/{{ show.show_id }}/seats" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">Select Seats</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-            <div class="border-t pt-6 text-center text-gray-500">
-                <p>No upcoming shows for this movie.</p>
-            </div>
-            {% endif %}
-        </div>
+<a href="{{ url_for('movies_page') }}" class="small text-muted text-decoration-none">&larr; All movies</a>
+
+<div class="row g-4 mt-1 mb-5">
+  <div class="col-5 col-sm-4 col-md-3">{{ poster(movie) }}</div>
+  <div class="col-12 col-md-9">
+    <h1 class="h2 fw-bold mb-2">{{ movie.title }}</h1>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      {% for genre in movie.genres %}
+        <span class="badge rounded-pill genre-badge">{{ genre }}</span>
+      {% endfor %}
     </div>
+    <ul class="list-inline text-muted mb-3">
+      {% if movie.rating is not none %}
+        <li class="list-inline-item"><span class="text-accent fw-bold">&#9733; {{ movie.rating }}/10</span></li>
+      {% endif %}
+      <li class="list-inline-item">&middot; {{ movie.certificate }}</li>
+      <li class="list-inline-item">&middot; {{ movie.language }}</li>
+      <li class="list-inline-item">&middot; {{ runtime(movie.duration_min) }}</li>
+      <li class="list-inline-item">&middot; Released <span data-date="{{ iso(movie.release_date) }}">{{ iso(movie.release_date) }}</span></li>
+    </ul>
+    <p class="mb-0 movie-description">{{ movie.description }}</p>
+  </div>
 </div>
+
+<h2 class="h4 mb-3">Showtimes</h2>
+{% if shows %}
+  {% set days = shows|groupby('show_date') %}
+  <ul class="nav nav-pills date-tabs mb-3" role="tablist">
+    {% for show_date, _ in days %}
+      {% set day = iso(show_date) %}
+      <li class="nav-item" role="presentation">
+        <button class="nav-link {% if loop.first %}active{% endif %}" id="tab-{{ day }}"
+                data-bs-toggle="pill" data-bs-target="#day-{{ day }}" type="button" role="tab"
+                aria-controls="day-{{ day }}" aria-selected="{{ 'true' if loop.first else 'false' }}">
+          <span data-date="{{ day }}" data-date-relative>{{ day }}</span>
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="tab-content">
+    {% for show_date, day_shows in days %}
+      {% set day = iso(show_date) %}
+      <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="day-{{ day }}"
+           role="tabpanel" aria-labelledby="tab-{{ day }}">
+        {% for theatre_name, theatre_shows in day_shows|groupby('theatre_name') %}
+          <div class="cb-card p-3 mb-3">
+            <div class="fw-semibold">{{ theatre_name }}</div>
+            <div class="small text-muted mb-3">{{ theatre_shows[0].city }}</div>
+            <div class="d-flex flex-wrap gap-2">
+              {% for s in theatre_shows|sort(attribute='start_time') %}
+                {# seats_left is shown once main.py sends it. #}
+                {% set full = s.seats_left is defined and s.seats_left == 0 %}
+                {% set low = s.seats_left is defined and 0 < s.seats_left <= 15 %}
+                <a class="show-btn {% if full %}is-full{% elif low %}is-low{% endif %}"
+                   href="{{ url_for('seat_select', show_id=s.show_id) }}"
+                   {% if full %}aria-disabled="true" tabindex="-1"{% endif %}>
+                  <span class="show-time">{{ hhmm(s.start_time) }}</span>
+                  <span class="show-meta">{{ s.screen_type }} &middot; {{ s.screen_name }}</span>
+                  {% if s.seats_left is defined %}
+                    <span class="show-meta show-seats">{% if full %}Sold out{% else %}{{ s.seats_left }} seats left{% endif %}</span>
+                  {% else %}
+                    <span class="show-meta">Ends {{ hhmm(s.end_time) }}</span>
+                  {% endif %}
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">No shows are scheduled for this movie yet. Please check back soon.</div>
+{% endif %}
 {% endblock %}
