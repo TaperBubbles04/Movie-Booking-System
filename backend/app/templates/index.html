@@ -1,43 +1,17 @@
 {% extends "base.html" %}
-
-{% block title %}CineBook - Book Movie Tickets Online{% endblock %}
+{% block title %}Book movie tickets{% endblock %}
 
 {% block content %}
-<div class="text-center mb-12">
-    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Book Movie Tickets Instantly</h1>
-    <p class="text-xl text-gray-600 max-w-2xl mx-auto">Choose your movie, pick your seats, and enjoy the show. No queues, no hassle.</p>
-</div>
-
-<div class="max-w-md mx-auto mb-12">
-    <form action="/movies" method="GET" class="bg-white p-6 rounded-xl shadow-md">
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Search Movies</label>
-            <input type="text" name="search" placeholder="Movie title..." 
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-        </div>
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Genre</label>
-            <select name="genre" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                <option value="">All Genres</option>
-                {% for g in genres %}
-                <option value="{{ g }}">{{ g }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
-            <input type="text" name="language" placeholder="Language (Tamil, Hindi, English...)" 
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-        </div>
-        <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-            Browse Movies
-        </button>
-    </form>
-</div>
-
-{% if user and user.role == 'ADMIN' %}
-<div class="mt-8 p-4 bg-indigo-50 rounded-xl border border-indigo-200">
-    <a href="/admin" class="text-indigo-700 font-medium hover:underline">Admin Dashboard →</a>
-</div>
-{% endif %}
+<section class="hero text-center py-5">
+  <h1 class="display-5 fw-bold mb-3">Your next show is <span class="text-accent">a few taps away</span></h1>
+  <p class="lead text-muted hero-lead mx-auto mb-4">
+    Pick a movie, choose your seats and pay. No queues at the box office.
+  </p>
+  <form method="get" action="{{ url_for('movies_page') }}" class="d-flex gap-2 hero-search mx-auto mb-3" role="search">
+    <label for="hero-search" class="visually-hidden">Search movies</label>
+    <input type="search" class="form-control form-control-lg" id="hero-search" name="search" placeholder="Search for a movie">
+    <button type="submit" class="btn btn-accent btn-lg">Search</button>
+  </form>
+  <a href="{{ url_for('movies_page') }}">or browse everything showing &rarr;</a>
+</section>
 {% endblock %}
