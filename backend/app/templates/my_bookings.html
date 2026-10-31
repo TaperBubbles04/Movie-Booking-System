@@ -1,67 +1,57 @@
 {% extends "base.html" %}
-
-{% block title %}My Bookings - CineBook{% endblock %}
+{% from "partials/_macros.html" import rupees, status_badge, hhmm, iso with context %}
+{% block title %}My Bookings{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">My Bookings</h1>
+<h1 class="h3 mb-4">My Bookings</h1>
 
-    {% if bookings %}
-    <div class="space-y-4">
-        {% for booking in bookings %}
-        <div class="bg-white rounded-xl shadow-md p-6">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div class="flex-1">
-                    <div class="flex items-center gap-4 mb-2">
-                        <h2 class="text-xl font-semibold text-gray-900">{{ booking.movie_title }}</h2>
-                        {% if booking.poster_url %}
-                        <img src="{{ booking.poster_url }}" alt="" class="w-12 h-16 object-cover rounded">
-                        {% endif %}
-                    </div>
-                    <div class="text-gray-600 text-sm space-y-1">
-                        <p>{{ booking.theatre_name }} - {{ booking.screen_name }}</p>
-                        <p>{{ booking.show_date }} at {{ booking.start_time }}</p>
-                        <p>Seats: {{ booking.seats|join(', ') }}</p>
-                    </div>
-                </div>
-                <div class="text-right md:text-left">
-                    <div class="mb-2">
-                        <span class="px-3 py-1 rounded-full text-sm font-medium
-                            {% if booking.status == 'CONFIRMED' %}bg-green-100 text-green-800
-                            {% elif booking.status == 'CANCELLED' %}bg-red-100 text-red-800
-                            {% else %}bg-yellow-100 text-yellow-800{% endif %}">
-                            {{ booking.status }}
-                        </span>
-                        {% if booking.payment_status %}
-                        <span class="px-3 py-1 rounded-full text-sm font-medium ml-2
-                            {% if booking.payment_status == 'SUCCESS' %}bg-green-100 text-green-800
-                            {% elif booking.payment_status == 'REFUNDED' %}bg-blue-100 text-blue-800
-                            {% else %}bg-red-100 text-red-800{% endif %}">
-                            {{ booking.payment_status }}
-                        </span>
-                        {% endif %}
-                    </div>
-                    <div class="font-bold text-lg text-gray-900">₹{{ booking.total_amount }}</div>
-                    {% if booking.status == 'CONFIRMED' %}
-                    <form method="POST" action="/bookings/{{ booking.booking_id }}/cancel" class="mt-2">
-                        <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium"
-                                onclick="return confirm('Cancel this booking? Refund will be processed.')">
-                            Cancel Booking
-                        </button>
-                    </form>
-                    {% endif %}
-                </div>
+{% if bookings %}
+  <div class="d-flex flex-column gap-3">
+    {% for b in bookings %}
+      {# Until main.py sends can_cancel, offer Cancel on every confirmed booking;
+         the server still refuses shows less than 2 hours away. #}
+      {% set can_cancel = b.can_cancel if b.can_cancel is defined else b.status == 'CONFIRMED' %}
+      <div class="cb-card booking-card p-3 p-md-4 {% if b.status == 'CANCELLED' %}is-cancelled{% endif %}">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-8">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+              <h2 class="h5 mb-0 booking-title">{{ b.movie_title }}</h2>
+              {{ status_badge(b.status) }}
+              {% if b.payment_status %}<span class="small text-muted">Payment {{ status_badge(b.payment_status) }}</span>{% endif %}
             </div>
+            <div class="text-muted small">
+              {{ b.theatre_name }}{% if b.screen_name %} &middot; {{ b.screen_name }}{% endif %} &middot;
+              <span data-date="{{ iso(b.show_date) }}" data-date-relative>{{ iso(b.show_date) }}</span>, {{ hhmm(b.start_time) }}
+            </div>
+            <div class="small mt-1">
+              Seats <strong>{{ b.seats|join(', ') }}</strong> &middot; {{ rupees(b.total_amount) }}
+              &middot; <span class="text-muted">Booking #{{ b.booking_id }}</span>
+            </div>
+            {% if b.status == 'CANCELLED' and b.payment_status == 'REFUNDED' %}
+              <div class="small text-accent mt-2">{{ rupees(b.total_amount) }} has been refunded to your original payment method.</div>
+            {% elif b.status == 'CONFIRMED' and not can_cancel %}
+              <div class="small text-muted mt-2">This booking can no longer be cancelled.</div>
+            {% endif %}
+          </div>
+          <div class="col-md-4 d-flex flex-wrap justify-content-md-end gap-2">
+            <a class="btn btn-sm btn-outline-light" href="{{ url_for('confirmation', booking_id=b.booking_id) }}">View ticket</a>
+            {% if can_cancel %}
+              <form method="post" action="{{ url_for('cancel_booking', booking_id=b.booking_id) }}"
+                    data-confirm="Cancel booking #{{ b.booking_id }} for {{ b.movie_title }}? This cannot be undone."
+                    data-single-submit>
+                <button type="submit" class="btn btn-sm btn-outline-danger">Cancel booking</button>
+              </form>
+            {% endif %}
+          </div>
         </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="text-center py-12">
-        <i class="fas fa-ticket-alt text-gray-300 text-6xl mb-4"></i>
-        <h3 class="text-xl text-gray-500">No bookings yet</h3>
-        <p class="text-gray-400 mt-2">Book your first movie ticket!</p>
-        <a href="/movies" class="mt-4 inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">Browse Movies</a>
-    </div>
-    {% endif %}
-</div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <p class="h5 mb-2">No bookings yet</p>
+    <p class="mb-3">When you book a show, your tickets will appear here.</p>
+    <a class="btn btn-accent" href="{{ url_for('movies_page') }}">Find a movie</a>
+  </div>
+{% endif %}
 {% endblock %}

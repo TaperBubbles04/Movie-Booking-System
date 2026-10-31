@@ -1,77 +1,59 @@
 {% extends "base.html" %}
-
-{% block title %}Checkout - CineBook{% endblock %}
+{% from "partials/_macros.html" import rupees, hhmm, iso with context %}
+{% block title %}Checkout{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-2">Checkout</h1>
-        <div class="text-gray-600">
-            <span>{{ show.movie_title }}</span>
-            <span class="mx-2">|</span>
-            <span>{{ show.theatre_name }} - {{ show.screen_name }}</span>
-            <span class="mx-2">|</span>
-            <span>{{ show.show_date }} at {{ show.start_time }}</span>
-        </div>
+<h1 class="h3 mb-4">Checkout</h1>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="cb-card p-4">
+      <h2 class="h5 mb-1">{{ show.movie_title }}</h2>
+      <p class="text-muted mb-4">
+        {{ show.theatre_name }} &middot; {{ show.screen_name }}<br>
+        <span data-date="{{ iso(show.show_date) }}" data-date-relative>{{ iso(show.show_date) }}</span>, {{ hhmm(show.start_time) }}
+      </p>
+
+      <table class="table table-sm align-middle mb-0">
+        <thead>
+          <tr class="small text-muted"><th>Seat</th><th>Category</th><th class="text-end">Price</th></tr>
+        </thead>
+        <tbody>
+          {% for seat in seats %}
+            <tr>
+              <td class="fw-semibold">{{ seat.row_label }}-{{ seat.seat_number }}</td>
+              <td>{{ seat.seat_category|title }}</td>
+              <td class="text-end">{{ rupees(seat.price) }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="fw-bold">
+            <td colspan="2">Total</td>
+            <td class="text-end">{{ rupees(total) }}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <a class="small d-inline-block mt-3" href="{{ url_for('seat_select', show_id=show.show_id) }}">&larr; Change seats</a>
     </div>
+  </div>
 
-    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-        <h2 class="text-xl font-semibold mb-4">Selected Seats</h2>
-        <div class="space-y-2">
-            {% for seat in seats %}
-            <div class="flex justify-between py-2 border-b border-gray-100 last:border-0">
-                <span>{{ seat.row_label }}-{{ seat.seat_number }} ({{ seat.seat_category }})</span>
-                <span>₹{{ seat.price }}</span>
-            </div>
-            {% endfor %}
-            <div class="flex justify-between font-bold text-lg pt-2">
-                <span>Total</span>
-                <span>₹{{ total }}</span>
-            </div>
-        </div>
-    </div>
-
-    <form method="POST" action="/book" class="bg-white rounded-xl shadow-md p-6">
-        <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
-        <div class="space-y-4">
-            <div class="grid grid-cols-3 gap-4">
-                <label class="p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50
-                    {% if payment_method == 'UPI' %}border-indigo-600 bg-indigo-50{% else %}border-gray-200{% endif %}">
-                    <input type="radio" name="payment_method" value="UPI" {% if payment_method == 'UPI' %}checked{% endif %} class="hidden peer">
-                    <div class="text-center">
-                        <i class="fas fa-mobile-alt text-3xl {% if payment_method == 'UPI' %}text-indigo-600{% else %}text-gray-400{% endif %}"></i>
-                        <div class="font-medium mt-1">UPI</div>
-                    </div>
-                </label>
-                <label class="p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50
-                    {% if payment_method == 'CARD' %}border-indigo-600 bg-indigo-50{% else %}border-gray-200{% endif %}">
-                    <input type="radio" name="payment_method" value="CARD" {% if payment_method == 'CARD' %}checked{% endif %} class="hidden peer">
-                    <div class="text-center">
-                        <i class="fas fa-credit-card text-3xl {% if payment_method == 'CARD' %}text-indigo-600{% else %}text-gray-400{% endif %}"></i>
-                        <div class="font-medium mt-1">Card</div>
-                    </div>
-                </label>
-                <label class="p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50
-                    {% if payment_method == 'CASH' %}border-indigo-600 bg-indigo-50{% else %}border-gray-200{% endif %}">
-                    <input type="radio" name="payment_method" value="CASH" {% if payment_method == 'CASH' %}checked{% endif %} class="hidden peer">
-                    <div class="text-center">
-                        <i class="fas fa-money-bill-wave text-3xl {% if payment_method == 'CASH' %}text-indigo-600{% else %}text-gray-400{% endif %}"></i>
-                        <div class="font-medium mt-1">Cash</div>
-                    </div>
-                </label>
-            </div>
-        </div>
-
-        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-            <div class="flex justify-between font-bold text-lg">
-                <span>Amount Payable</span>
-                <span>₹{{ total }}</span>
-            </div>
-        </div>
-
-        <button type="submit" class="mt-6 w-full bg-indigo-600 text-white py-3 rounded-lg font-medium text-lg hover:bg-indigo-700 transition">
-            Confirm & Pay ₹{{ total }}
-        </button>
+  <div class="col-lg-5">
+    {# main.py's /book reads seats and payment method from the session, so this form
+       only confirms. payment_method is also posted in case /book starts reading it. #}
+    <form method="post" action="{{ url_for('process_booking') }}" class="cb-card p-4" data-single-submit>
+      <h2 class="h5 mb-3">Payment</h2>
+      <div class="pay-option mb-3">
+        <span>
+          <span class="d-block small text-muted">Paying with</span>
+          <span class="fw-semibold">{{ {'UPI': 'UPI', 'CARD': 'Card', 'CASH': 'Cash at the box office'}.get(payment_method, payment_method) }}</span>
+        </span>
+        <a class="ms-auto small" href="{{ url_for('seat_select', show_id=show.show_id) }}">Change</a>
+      </div>
+      <input type="hidden" name="payment_method" value="{{ payment_method }}">
+      <button type="submit" class="btn btn-accent btn-lg w-100"
+              data-busy-text="Processing..." data-idle-text="Pay {{ rupees(total) }}">Pay {{ rupees(total) }}</button>
     </form>
+  </div>
 </div>
 {% endblock %}
