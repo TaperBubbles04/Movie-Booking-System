@@ -8,7 +8,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     phone: str = Field(..., min_length=10, max_length=10, pattern=r"^\d{10}$")
     password: str = Field(..., min_length=8)
-    role: str = Field(default="CUSTOMER", pattern="^(CUSTOMER|ADMIN)$")
+    # role removed - admin created manually in seed data only
 
 
 class LoginRequest(BaseModel):

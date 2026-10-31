@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Confirmed - CineBook{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Ticket Card -->
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden mb-6">
+        <div class="bg-indigo-600 text-white p-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-bold">{{ booking.movie_title }}</h1>
+                    <p class="text-indigo-100">{{ booking.theatre_name }} - {{ booking.screen_name }} ({{ booking.screen_type }})</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm opacity-75">Booking ID</div>
+                    <div class="font-mono text-lg">{{ booking.booking_id }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p class="text-gray-500">Date</p>
+                    <p class="font-medium">{{ booking.show_date }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500">Time</p>
+                    <p class="font-medium">{{ booking.start_time }} - {{ booking.end_time }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500">Seats</p>
+                    <p class="font-medium">{{ booking.seats|join(', ') }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500">Categories</p>
+                    <p class="font-medium">{{ booking.seat_categories|join(', ') }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500">Booking Time</p>
+                    <p class="font-medium">{{ booking.booking_time }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500">Status</p>
+                    <p class="font-medium text-green-600">{{ booking.status }}</p>
+                </div>
+            </div>
+
+            <div class="border-t pt-4">
+                <div class="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span>₹{{ booking.total_amount }}</span>
+                </div>
+            </div>
+
+            {% if payment %}
+            <div class="border-t pt-4">
+                <p class="text-sm text-gray-500 mb-2">Payment Details</p>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <p>Method: <span class="font-medium">{{ payment.method }}</span></p>
+                    <p>Status: <span class="font-medium text-green-600">{{ payment.status }}</span></p>
+                    <p>Transaction ID: <span class="font-mono">{{ payment.payment_id }}</span></p>
+                    <p>Paid At: <span class="font-medium">{{ payment.paid_at }}</span></p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="/my-bookings" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 inline-block mr-4">View My Bookings</a>
+        <a href="/movies" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-gray-300 inline-block">Book More Tickets</a>
+    </div>
+</div>
+{% endblock %}
