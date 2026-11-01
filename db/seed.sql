@@ -294,50 +294,50 @@ ORDER BY r.ord, s.seat_no;
 -- ----------------------------------------------------------------------------
 INSERT INTO Show (movie_id, screen_id, show_date, start_time, end_time) VALUES
     -- Day 1: Tuesday 2026-10-27 (Past — for 7-day sales & reports)
-    (1, 1, '2026-10-27', '10:00', '13:00'), -- show_id = 1  (Leo, Chennai IMAX)
-    (5, 1, '2026-10-27', '18:30', '21:45'), -- show_id = 2  (Oppenheimer, Chennai IMAX)
-    (3, 2, '2026-10-27', '14:00', '17:00'), -- show_id = 3  (Jawan, Chennai 3D)
-    (6, 4, '2026-10-27', '19:00', '22:00'), -- show_id = 4  (Dune 2, Bengaluru IMAX)
+    (1, 1, (CURRENT_DATE - 3), '10:00', '13:00'), -- show_id = 1  (Leo, Chennai IMAX)
+    (5, 1, (CURRENT_DATE - 3), '18:30', '21:45'), -- show_id = 2  (Oppenheimer, Chennai IMAX)
+    (3, 2, (CURRENT_DATE - 3), '14:00', '17:00'), -- show_id = 3  (Jawan, Chennai 3D)
+    (6, 4, (CURRENT_DATE - 3), '19:00', '22:00'), -- show_id = 4  (Dune 2, Bengaluru IMAX)
 
     -- Day 2: Wednesday 2026-10-28 (Past)
-    (2, 1, '2026-10-28', '10:30', '13:30'), -- show_id = 5  (Vikram, Chennai IMAX)
-    (7, 2, '2026-10-28', '18:00', '21:15'), -- show_id = 6  (Kalki 2898 AD, Chennai 3D)
-    (8, 3, '2026-10-28', '15:00', '17:45'), -- show_id = 7  (Hi Nanna, Chennai 2D)
-    (4, 5, '2026-10-28', '19:30', '22:15'), -- show_id = 8  (Stree 2, Bengaluru 2D)
+    (2, 1, (CURRENT_DATE - 2), '10:30', '13:30'), -- show_id = 5  (Vikram, Chennai IMAX)
+    (7, 2, (CURRENT_DATE - 2), '18:00', '21:15'), -- show_id = 6  (Kalki 2898 AD, Chennai 3D)
+    (8, 3, (CURRENT_DATE - 2), '15:00', '17:45'), -- show_id = 7  (Hi Nanna, Chennai 2D)
+    (4, 5, (CURRENT_DATE - 2), '19:30', '22:15'), -- show_id = 8  (Stree 2, Bengaluru 2D)
 
     -- Day 3: Thursday 2026-10-29 (Past)
-    (1, 1, '2026-10-29', '14:00', '17:00'), -- show_id = 9  (Leo, Chennai IMAX)
-    (9, 2, '2026-10-29', '11:00', '13:30'), -- show_id = 10 (Spider-Verse, Chennai 3D)
-    (5, 4, '2026-10-29', '18:30', '21:45'), -- show_id = 11 (Oppenheimer, Bengaluru IMAX)
-    (3, 5, '2026-10-29', '15:30', '18:30'), -- show_id = 12 (Jawan, Bengaluru 2D)
+    (1, 1, (CURRENT_DATE - 1), '14:00', '17:00'), -- show_id = 9  (Leo, Chennai IMAX)
+    (9, 2, (CURRENT_DATE - 1), '11:00', '13:30'), -- show_id = 10 (Spider-Verse, Chennai 3D)
+    (5, 4, (CURRENT_DATE - 1), '18:30', '21:45'), -- show_id = 11 (Oppenheimer, Bengaluru IMAX)
+    (3, 5, (CURRENT_DATE - 1), '15:30', '18:30'), -- show_id = 12 (Jawan, Bengaluru 2D)
 
     -- Day 4: Friday 2026-10-30 (Past/Recent)
-    (1, 1, '2026-10-30', '10:00', '13:00'), -- show_id = 13 (Leo, Chennai IMAX)
-    (6, 1, '2026-10-30', '18:30', '21:30'), -- show_id = 14 (Dune 2, Chennai IMAX)
-    (2, 3, '2026-10-30', '14:30', '17:30'), -- show_id = 15 (Vikram, Chennai 2D)
-    (7, 4, '2026-10-30', '19:00', '22:15'), -- show_id = 16 (Kalki 2898 AD, Bengaluru IMAX)
-    (4, 5, '2026-10-30', '16:00', '18:45'), -- show_id = 17 (Stree 2, Bengaluru 2D)
+    (1, 1, CURRENT_DATE, '10:00', '13:00'), -- show_id = 13 (Leo, Chennai IMAX)
+    (6, 1, CURRENT_DATE, '18:30', '21:30'), -- show_id = 14 (Dune 2, Chennai IMAX)
+    (2, 3, CURRENT_DATE, '14:30', '17:30'), -- show_id = 15 (Vikram, Chennai 2D)
+    (7, 4, CURRENT_DATE, '19:00', '22:15'), -- show_id = 16 (Kalki 2898 AD, Bengaluru IMAX)
+    (4, 5, CURRENT_DATE, '16:00', '18:45'), -- show_id = 17 (Stree 2, Bengaluru 2D)
 
     -- Day 5: Saturday 2026-10-31 (Weekend — Higher Pricing)
-    (1, 1, '2026-10-31', '10:00', '13:00'), -- show_id = 18 (Leo, Chennai IMAX)
-    (5, 1, '2026-10-31', '14:30', '17:45'), -- show_id = 19 (Oppenheimer, Chennai IMAX)
-    (7, 2, '2026-10-31', '18:30', '21:45'), -- show_id = 20 (Kalki 2898 AD, Chennai 3D)
-    (8, 3, '2026-10-31', '11:30', '14:15'), -- show_id = 21 (Hi Nanna, Chennai 2D)
-    (6, 4, '2026-10-31', '18:00', '21:00'), -- show_id = 22 (Dune 2, Bengaluru IMAX)
-    (9, 5, '2026-10-31', '15:00', '17:30'), -- show_id = 23 (Spider-Verse, Bengaluru 2D)
+    (1, 1, (CURRENT_DATE + 1), '10:00', '13:00'), -- show_id = 18 (Leo, Chennai IMAX)
+    (5, 1, (CURRENT_DATE + 1), '14:30', '17:45'), -- show_id = 19 (Oppenheimer, Chennai IMAX)
+    (7, 2, (CURRENT_DATE + 1), '18:30', '21:45'), -- show_id = 20 (Kalki 2898 AD, Chennai 3D)
+    (8, 3, (CURRENT_DATE + 1), '11:30', '14:15'), -- show_id = 21 (Hi Nanna, Chennai 2D)
+    (6, 4, (CURRENT_DATE + 1), '18:00', '21:00'), -- show_id = 22 (Dune 2, Bengaluru IMAX)
+    (9, 5, (CURRENT_DATE + 1), '15:00', '17:30'), -- show_id = 23 (Spider-Verse, Bengaluru 2D)
 
     -- Day 6: Sunday 2026-11-01 (Weekend — Higher Pricing & Live Demo Target)
-    (1, 1, '2026-11-01', '10:00', '13:00'), -- show_id = 24 (Leo, Chennai IMAX)
-    (6, 1, '2026-11-01', '19:30', '22:30'), -- show_id = 25 (Dune 2, Chennai IMAX)
-    (9, 2, '2026-11-01', '14:00', '16:30'), -- show_id = 26 (Spider-Verse, Chennai 3D)
-    (4, 3, '2026-11-01', '18:30', '21:15'), -- show_id = 27 (Stree 2, Chennai 2D)
-    (7, 4, '2026-11-01', '15:00', '18:15'), -- show_id = 28 (Kalki 2898 AD, Bengaluru IMAX)
-    (3, 5, '2026-11-01', '19:00', '22:00'), -- show_id = 29 (Jawan, Bengaluru 2D)
+    (1, 1, (CURRENT_DATE + 2), '10:00', '13:00'), -- show_id = 24 (Leo, Chennai IMAX)
+    (6, 1, (CURRENT_DATE + 2), '19:30', '22:30'), -- show_id = 25 (Dune 2, Chennai IMAX)
+    (9, 2, (CURRENT_DATE + 2), '14:00', '16:30'), -- show_id = 26 (Spider-Verse, Chennai 3D)
+    (4, 3, (CURRENT_DATE + 2), '18:30', '21:15'), -- show_id = 27 (Stree 2, Chennai 2D)
+    (7, 4, (CURRENT_DATE + 2), '15:00', '18:15'), -- show_id = 28 (Kalki 2898 AD, Bengaluru IMAX)
+    (3, 5, (CURRENT_DATE + 2), '19:00', '22:00'), -- show_id = 29 (Jawan, Bengaluru 2D)
 
     -- Day 7: Monday 2026-11-02 (Upcoming Weekday)
-    (2, 1, '2026-11-02', '18:00', '21:00'), -- show_id = 30 (Vikram, Chennai IMAX)
-    (8, 3, '2026-11-02', '14:00', '16:45'), -- show_id = 31 (Hi Nanna, Chennai 2D)
-    (5, 4, '2026-11-02', '19:00', '22:15'); -- show_id = 32 (Oppenheimer, Bengaluru IMAX)
+    (2, 1, (CURRENT_DATE + 3), '18:00', '21:00'), -- show_id = 30 (Vikram, Chennai IMAX)
+    (8, 3, (CURRENT_DATE + 3), '14:00', '16:45'), -- show_id = 31 (Hi Nanna, Chennai 2D)
+    (5, 4, (CURRENT_DATE + 3), '19:00', '22:15'); -- show_id = 32 (Oppenheimer, Bengaluru IMAX)
 
 -- ----------------------------------------------------------------------------
 -- 9. Show_Pricing (3 tiers per show = 96 rows; weekend & IMAX/3D priced higher)
@@ -351,15 +351,15 @@ SELECT
     sh.show_id,
     cat.seat_category,
     CASE
-        WHEN sc.screen_type = 'IMAX' AND sh.show_date IN ('2026-10-31', '2026-11-01') THEN
+        WHEN sc.screen_type = 'IMAX' AND sh.show_date IN (CURRENT_DATE + 1, CURRENT_DATE + 2) THEN
             CASE cat.seat_category WHEN 'REGULAR' THEN 250 WHEN 'PREMIUM' THEN 360 ELSE 530 END
         WHEN sc.screen_type = 'IMAX' THEN
             CASE cat.seat_category WHEN 'REGULAR' THEN 220 WHEN 'PREMIUM' THEN 320 ELSE 480 END
-        WHEN sc.screen_type = '3D' AND sh.show_date IN ('2026-10-31', '2026-11-01') THEN
+        WHEN sc.screen_type = '3D' AND sh.show_date IN (CURRENT_DATE + 1, CURRENT_DATE + 2) THEN
             CASE cat.seat_category WHEN 'REGULAR' THEN 210 WHEN 'PREMIUM' THEN 300 ELSE 450 END
         WHEN sc.screen_type = '3D' THEN
             CASE cat.seat_category WHEN 'REGULAR' THEN 180 WHEN 'PREMIUM' THEN 260 ELSE 400 END
-        WHEN sh.show_date IN ('2026-10-31', '2026-11-01') THEN
+        WHEN sh.show_date IN (CURRENT_DATE + 1, CURRENT_DATE + 2) THEN
             CASE cat.seat_category WHEN 'REGULAR' THEN 180 WHEN 'PREMIUM' THEN 260 ELSE 400 END
         ELSE
             CASE cat.seat_category WHEN 'REGULAR' THEN 150 WHEN 'PREMIUM' THEN 220 ELSE 350 END
@@ -390,9 +390,9 @@ INSERT INTO Customer (name, email, phone, password_hash, role, created_at) VALUE
     ('Neha Gupta', 'neha.gupta@gmail.com', '9841112233', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-26 13:50:00+05:30'),
     ('Siddharth Malhotra', 'sid.m@gmail.com', '9841223344', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-26 19:15:00+05:30'),
     -- 14: Customer who NEVER books (powers Query #8 NOT EXISTS / NOT IN subquery)
-    ('Meera Krishnan', 'meera.krishnan@gmail.com', '9841334455', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-27 10:00:00+05:30'),
+    ('Meera Krishnan', 'meera.krishnan@gmail.com', '9841334455', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', ((CURRENT_DATE - 4) + TIME '10:00:00')),
     -- 15: Tharanesh's test account from README/commit message (also never booked initially)
-    ('Test Customer', 'test@example.com', '9841445566', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', '2026-10-27 11:00:00+05:30');
+    ('Test Customer', 'test@example.com', '9841445566', crypt('password123', gen_salt('bf', 10)), 'CUSTOMER', ((CURRENT_DATE - 4) + TIME '11:00:00'));
 
 -- ----------------------------------------------------------------------------
 -- 11. Booking (32 rows: 27 CONFIRMED, 5 CANCELLED across 7 days)
@@ -400,49 +400,49 @@ INSERT INTO Customer (name, email, phone, password_hash, role, created_at) VALUE
 -- ----------------------------------------------------------------------------
 INSERT INTO Booking (customer_id, show_id, booking_time, total_amount, status) VALUES
     -- Oct 27 bookings
-    (2,  1,  '2026-10-27 08:30:00+05:30', 660,  'CONFIRMED'), -- booking_id = 1  (3x REGULAR @ 220)
-    (3,  1,  '2026-10-27 09:00:00+05:30', 960,  'CONFIRMED'), -- booking_id = 2  (3x PREMIUM @ 320)
-    (4,  2,  '2026-10-27 14:15:00+05:30', 960,  'CONFIRMED'), -- booking_id = 3  (2x RECLINER @ 480)
-    (5,  3,  '2026-10-27 11:20:00+05:30', 540,  'CONFIRMED'), -- booking_id = 4  (3x REGULAR @ 180)
-    (6,  4,  '2026-10-27 16:00:00+05:30', 640,  'CONFIRMED'), -- booking_id = 5  (2x PREMIUM @ 320)
+    (2,  1,  ((CURRENT_DATE - 4) + TIME '08:30:00'), 660,  'CONFIRMED'), -- booking_id = 1  (3x REGULAR @ 220)
+    (3,  1,  ((CURRENT_DATE - 4) + TIME '09:00:00'), 960,  'CONFIRMED'), -- booking_id = 2  (3x PREMIUM @ 320)
+    (4,  2,  ((CURRENT_DATE - 4) + TIME '14:15:00'), 960,  'CONFIRMED'), -- booking_id = 3  (2x RECLINER @ 480)
+    (5,  3,  ((CURRENT_DATE - 4) + TIME '11:20:00'), 540,  'CONFIRMED'), -- booking_id = 4  (3x REGULAR @ 180)
+    (6,  4,  ((CURRENT_DATE - 4) + TIME '16:00:00'), 640,  'CONFIRMED'), -- booking_id = 5  (2x PREMIUM @ 320)
     -- Cancelled booking on show 1 (seats 4, 5) followed by re-booking in booking_id = 7!
-    (7,  1,  '2026-10-27 09:10:00+05:30', 440,  'CANCELLED'), -- booking_id = 6  (2x REGULAR @ 220 - CANCELLED)
-    (8,  1,  '2026-10-27 09:25:00+05:30', 440,  'CONFIRMED'), -- booking_id = 7  (Re-booked seats 4, 5 @ 220!)
+    (7,  1,  ((CURRENT_DATE - 4) + TIME '09:10:00'), 440,  'CANCELLED'), -- booking_id = 6  (2x REGULAR @ 220 - CANCELLED)
+    (8,  1,  ((CURRENT_DATE - 4) + TIME '09:25:00'), 440,  'CONFIRMED'), -- booking_id = 7  (Re-booked seats 4, 5 @ 220!)
 
     -- Oct 28 bookings
-    (9,  5,  '2026-10-28 08:45:00+05:30', 960,  'CONFIRMED'), -- booking_id = 8  (3x PREMIUM @ 320)
-    (10, 6,  '2026-10-28 13:10:00+05:30', 800,  'CONFIRMED'), -- booking_id = 9  (2x RECLINER @ 400)
-    (11, 7,  '2026-10-28 12:00:00+05:30', 450,  'CONFIRMED'), -- booking_id = 10 (3x REGULAR @ 150)
-    (12, 8,  '2026-10-28 15:30:00+05:30', 660,  'CONFIRMED'), -- booking_id = 11 (3x PREMIUM @ 220)
-    (13, 6,  '2026-10-28 14:00:00+05:30', 360,  'CANCELLED'), -- booking_id = 12 (2x REGULAR @ 180 - CANCELLED)
+    (9,  5,  ((CURRENT_DATE - 3) + TIME '08:45:00'), 960,  'CONFIRMED'), -- booking_id = 8  (3x PREMIUM @ 320)
+    (10, 6,  ((CURRENT_DATE - 3) + TIME '13:10:00'), 800,  'CONFIRMED'), -- booking_id = 9  (2x RECLINER @ 400)
+    (11, 7,  ((CURRENT_DATE - 3) + TIME '12:00:00'), 450,  'CONFIRMED'), -- booking_id = 10 (3x REGULAR @ 150)
+    (12, 8,  ((CURRENT_DATE - 3) + TIME '15:30:00'), 660,  'CONFIRMED'), -- booking_id = 11 (3x PREMIUM @ 220)
+    (13, 6,  ((CURRENT_DATE - 3) + TIME '14:00:00'), 360,  'CANCELLED'), -- booking_id = 12 (2x REGULAR @ 180 - CANCELLED)
 
     -- Oct 29 bookings
-    (2,  9,  '2026-10-29 10:00:00+05:30', 1440, 'CONFIRMED'), -- booking_id = 13 (3x RECLINER @ 480)
-    (4,  10, '2026-10-29 09:15:00+05:30', 780,  'CONFIRMED'), -- booking_id = 14 (3x PREMIUM @ 260)
-    (5,  11, '2026-10-29 13:45:00+05:30', 1280, 'CONFIRMED'), -- booking_id = 15 (4x PREMIUM @ 320)
-    (6,  12, '2026-10-29 11:30:00+05:30', 700,  'CONFIRMED'), -- booking_id = 16 (2x RECLINER @ 350)
+    (2,  9,  ((CURRENT_DATE - 2) + TIME '10:00:00'), 1440, 'CONFIRMED'), -- booking_id = 13 (3x RECLINER @ 480)
+    (4,  10, ((CURRENT_DATE - 2) + TIME '09:15:00'), 780,  'CONFIRMED'), -- booking_id = 14 (3x PREMIUM @ 260)
+    (5,  11, ((CURRENT_DATE - 2) + TIME '13:45:00'), 1280, 'CONFIRMED'), -- booking_id = 15 (4x PREMIUM @ 320)
+    (6,  12, ((CURRENT_DATE - 2) + TIME '11:30:00'), 700,  'CONFIRMED'), -- booking_id = 16 (2x RECLINER @ 350)
 
     -- Oct 30 bookings
-    (3,  13, '2026-10-30 08:20:00+05:30', 880,  'CONFIRMED'), -- booking_id = 17 (4x REGULAR @ 220)
-    (7,  14, '2026-10-30 12:10:00+05:30', 960,  'CONFIRMED'), -- booking_id = 18 (3x PREMIUM @ 320)
-    (8,  15, '2026-10-30 10:30:00+05:30', 300,  'CANCELLED'), -- booking_id = 19 (2x REGULAR @ 150 - CANCELLED)
-    (9,  16, '2026-10-30 14:00:00+05:30', 1440, 'CONFIRMED'), -- booking_id = 20 (3x RECLINER @ 480)
-    (10, 17, '2026-10-30 11:45:00+05:30', 600,  'CONFIRMED'), -- booking_id = 21 (4x REGULAR @ 150)
+    (3,  13, ((CURRENT_DATE - 1) + TIME '08:20:00'), 880,  'CONFIRMED'), -- booking_id = 17 (4x REGULAR @ 220)
+    (7,  14, ((CURRENT_DATE - 1) + TIME '12:10:00'), 960,  'CONFIRMED'), -- booking_id = 18 (3x PREMIUM @ 320)
+    (8,  15, ((CURRENT_DATE - 1) + TIME '10:30:00'), 300,  'CANCELLED'), -- booking_id = 19 (2x REGULAR @ 150 - CANCELLED)
+    (9,  16, ((CURRENT_DATE - 1) + TIME '14:00:00'), 1440, 'CONFIRMED'), -- booking_id = 20 (3x RECLINER @ 480)
+    (10, 17, ((CURRENT_DATE - 1) + TIME '11:45:00'), 600,  'CONFIRMED'), -- booking_id = 21 (4x REGULAR @ 150)
 
     -- Oct 31 (Weekend) bookings
-    (2,  18, '2026-10-31 08:00:00+05:30', 1080, 'CONFIRMED'), -- booking_id = 22 (3x PREMIUM @ 360)
-    (4,  19, '2026-10-31 09:30:00+05:30', 1060, 'CONFIRMED'), -- booking_id = 23 (2x RECLINER @ 530)
-    (5,  20, '2026-10-31 11:15:00+05:30', 900,  'CONFIRMED'), -- booking_id = 24 (3x PREMIUM @ 300)
-    (11, 21, '2026-10-31 09:00:00+05:30', 360,  'CANCELLED'), -- booking_id = 25 (2x REGULAR @ 180 - CANCELLED)
-    (12, 22, '2026-10-31 12:30:00+05:30', 1000, 'CONFIRMED'), -- booking_id = 26 (4x REGULAR @ 250)
-    (13, 23, '2026-10-31 10:45:00+05:30', 800,  'CONFIRMED'), -- booking_id = 27 (2x RECLINER @ 400)
+    (2,  18, (CURRENT_DATE + TIME '08:00:00'), 1080, 'CONFIRMED'), -- booking_id = 22 (3x PREMIUM @ 360)
+    (4,  19, (CURRENT_DATE + TIME '09:30:00'), 1060, 'CONFIRMED'), -- booking_id = 23 (2x RECLINER @ 530)
+    (5,  20, (CURRENT_DATE + TIME '11:15:00'), 900,  'CONFIRMED'), -- booking_id = 24 (3x PREMIUM @ 300)
+    (11, 21, (CURRENT_DATE + TIME '09:00:00'), 360,  'CANCELLED'), -- booking_id = 25 (2x REGULAR @ 180 - CANCELLED)
+    (12, 22, (CURRENT_DATE + TIME '12:30:00'), 1000, 'CONFIRMED'), -- booking_id = 26 (4x REGULAR @ 250)
+    (13, 23, (CURRENT_DATE + TIME '10:45:00'), 800,  'CONFIRMED'), -- booking_id = 27 (2x RECLINER @ 400)
 
     -- Nov 01 (Weekend) & Nov 02 bookings
-    (3,  24, '2026-10-31 18:00:00+05:30', 750,  'CONFIRMED'), -- booking_id = 28 (3x REGULAR @ 250)
-    (6,  25, '2026-10-31 19:00:00+05:30', 1060, 'CONFIRMED'), -- booking_id = 29 (2x RECLINER @ 530)
-    (7,  26, '2026-10-31 20:00:00+05:30', 630,  'CONFIRMED'), -- booking_id = 30 (3x REGULAR @ 210)
-    (8,  28, '2026-10-31 20:30:00+05:30', 720,  'CANCELLED'), -- booking_id = 31 (2x PREMIUM @ 360 - CANCELLED)
-    (9,  30, '2026-10-31 21:00:00+05:30', 640,  'CONFIRMED'); -- booking_id = 32 (2x PREMIUM @ 320)
+    (3,  24, (CURRENT_DATE + TIME '18:00:00'), 750,  'CONFIRMED'), -- booking_id = 28 (3x REGULAR @ 250)
+    (6,  25, (CURRENT_DATE + TIME '19:00:00'), 1060, 'CONFIRMED'), -- booking_id = 29 (2x RECLINER @ 530)
+    (7,  26, (CURRENT_DATE + TIME '20:00:00'), 630,  'CONFIRMED'), -- booking_id = 30 (3x REGULAR @ 210)
+    (8,  28, (CURRENT_DATE + TIME '20:30:00'), 720,  'CANCELLED'), -- booking_id = 31 (2x PREMIUM @ 360 - CANCELLED)
+    (9,  30, (CURRENT_DATE + TIME '21:00:00'), 640,  'CONFIRMED'); -- booking_id = 32 (2x PREMIUM @ 320)
 
 -- ----------------------------------------------------------------------------
 -- 12. Ticket (84 rows across the 32 bookings)
@@ -577,37 +577,37 @@ INSERT INTO Ticket (booking_id, show_id, seat_id, price, status) VALUES
 -- 13. Payment (32 rows: mix of UPI, CARD, CASH; SUCCESS, REFUNDED, FAILED)
 -- ----------------------------------------------------------------------------
 INSERT INTO Payment (booking_id, amount, method, status, paid_at) VALUES
-    (1,  660,  'UPI',  'SUCCESS',  '2026-10-27 08:31:00+05:30'),
-    (2,  960,  'CARD', 'SUCCESS',  '2026-10-27 09:01:00+05:30'),
-    (3,  960,  'UPI',  'SUCCESS',  '2026-10-27 14:16:00+05:30'),
-    (4,  540,  'CASH', 'SUCCESS',  '2026-10-27 11:21:00+05:30'),
-    (5,  640,  'UPI',  'SUCCESS',  '2026-10-27 16:01:00+05:30'),
-    (6,  440,  'UPI',  'REFUNDED', '2026-10-27 09:11:00+05:30'),
-    (7,  440,  'CARD', 'SUCCESS',  '2026-10-27 09:26:00+05:30'),
-    (8,  960,  'UPI',  'SUCCESS',  '2026-10-28 08:46:00+05:30'),
-    (9,  800,  'CARD', 'SUCCESS',  '2026-10-28 13:11:00+05:30'),
-    (10, 450,  'CASH', 'SUCCESS',  '2026-10-28 12:01:00+05:30'),
-    (11, 660,  'UPI',  'SUCCESS',  '2026-10-28 15:31:00+05:30'),
-    (12, 360,  'CARD', 'REFUNDED', '2026-10-28 14:01:00+05:30'),
-    (13, 1440, 'CARD', 'SUCCESS',  '2026-10-29 10:01:00+05:30'),
-    (14, 780,  'UPI',  'SUCCESS',  '2026-10-29 09:16:00+05:30'),
-    (15, 1280, 'UPI',  'SUCCESS',  '2026-10-29 13:46:00+05:30'),
-    (16, 700,  'CASH', 'SUCCESS',  '2026-10-29 11:31:00+05:30'),
-    (17, 880,  'UPI',  'SUCCESS',  '2026-10-30 08:21:00+05:30'),
-    (18, 960,  'CARD', 'SUCCESS',  '2026-10-30 12:11:00+05:30'),
-    (19, 300,  'UPI',  'FAILED',   '2026-10-30 10:31:00+05:30'),
-    (20, 1440, 'CARD', 'SUCCESS',  '2026-10-30 14:01:00+05:30'),
-    (21, 600,  'CASH', 'SUCCESS',  '2026-10-30 11:46:00+05:30'),
-    (22, 1080, 'UPI',  'SUCCESS',  '2026-10-31 08:01:00+05:30'),
-    (23, 1060, 'CARD', 'SUCCESS',  '2026-10-31 09:31:00+05:30'),
-    (24, 900,  'UPI',  'SUCCESS',  '2026-10-31 11:16:00+05:30'),
-    (25, 360,  'UPI',  'REFUNDED', '2026-10-31 09:01:00+05:30'),
-    (26, 1000, 'CARD', 'SUCCESS',  '2026-10-31 12:31:00+05:30'),
-    (27, 800,  'UPI',  'SUCCESS',  '2026-10-31 10:46:00+05:30'),
-    (28, 750,  'UPI',  'SUCCESS',  '2026-10-31 18:01:00+05:30'),
-    (29, 1060, 'CARD', 'SUCCESS',  '2026-10-31 19:01:00+05:30'),
-    (30, 630,  'CASH', 'SUCCESS',  '2026-10-31 20:01:00+05:30'),
-    (31, 720,  'CARD', 'REFUNDED', '2026-10-31 20:31:00+05:30'),
-    (32, 640,  'UPI',  'SUCCESS',  '2026-10-31 21:01:00+05:30');
+    (1,  660,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 4) + TIME '08:31:00')),
+    (2,  960,  'CARD', 'SUCCESS',  ((CURRENT_DATE - 4) + TIME '09:01:00')),
+    (3,  960,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 4) + TIME '14:16:00')),
+    (4,  540,  'CASH', 'SUCCESS',  ((CURRENT_DATE - 4) + TIME '11:21:00')),
+    (5,  640,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 4) + TIME '16:01:00')),
+    (6,  440,  'UPI',  'REFUNDED', ((CURRENT_DATE - 4) + TIME '09:11:00')),
+    (7,  440,  'CARD', 'SUCCESS',  ((CURRENT_DATE - 4) + TIME '09:26:00')),
+    (8,  960,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 3) + TIME '08:46:00')),
+    (9,  800,  'CARD', 'SUCCESS',  ((CURRENT_DATE - 3) + TIME '13:11:00')),
+    (10, 450,  'CASH', 'SUCCESS',  ((CURRENT_DATE - 3) + TIME '12:01:00')),
+    (11, 660,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 3) + TIME '15:31:00')),
+    (12, 360,  'CARD', 'REFUNDED', ((CURRENT_DATE - 3) + TIME '14:01:00')),
+    (13, 1440, 'CARD', 'SUCCESS',  ((CURRENT_DATE - 2) + TIME '10:01:00')),
+    (14, 780,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 2) + TIME '09:16:00')),
+    (15, 1280, 'UPI',  'SUCCESS',  ((CURRENT_DATE - 2) + TIME '13:46:00')),
+    (16, 700,  'CASH', 'SUCCESS',  ((CURRENT_DATE - 2) + TIME '11:31:00')),
+    (17, 880,  'UPI',  'SUCCESS',  ((CURRENT_DATE - 1) + TIME '08:21:00')),
+    (18, 960,  'CARD', 'SUCCESS',  ((CURRENT_DATE - 1) + TIME '12:11:00')),
+    (19, 300,  'UPI',  'FAILED',   ((CURRENT_DATE - 1) + TIME '10:31:00')),
+    (20, 1440, 'CARD', 'SUCCESS',  ((CURRENT_DATE - 1) + TIME '14:01:00')),
+    (21, 600,  'CASH', 'SUCCESS',  ((CURRENT_DATE - 1) + TIME '11:46:00')),
+    (22, 1080, 'UPI',  'SUCCESS',  (CURRENT_DATE + TIME '08:01:00')),
+    (23, 1060, 'CARD', 'SUCCESS',  (CURRENT_DATE + TIME '09:31:00')),
+    (24, 900,  'UPI',  'SUCCESS',  (CURRENT_DATE + TIME '11:16:00')),
+    (25, 360,  'UPI',  'REFUNDED', (CURRENT_DATE + TIME '09:01:00')),
+    (26, 1000, 'CARD', 'SUCCESS',  (CURRENT_DATE + TIME '12:31:00')),
+    (27, 800,  'UPI',  'SUCCESS',  (CURRENT_DATE + TIME '10:46:00')),
+    (28, 750,  'UPI',  'SUCCESS',  (CURRENT_DATE + TIME '18:01:00')),
+    (29, 1060, 'CARD', 'SUCCESS',  (CURRENT_DATE + TIME '19:01:00')),
+    (30, 630,  'CASH', 'SUCCESS',  (CURRENT_DATE + TIME '20:01:00')),
+    (31, 720,  'CARD', 'REFUNDED', (CURRENT_DATE + TIME '20:31:00')),
+    (32, 640,  'UPI',  'SUCCESS',  (CURRENT_DATE + TIME '21:01:00'));
 
 COMMIT;

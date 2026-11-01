@@ -1,3 +1,4 @@
+\pset pager off
 -- ============================================================================
 -- CineBook Multiplex Booking System — SQL Showcase & Demo Queries (db/queries.sql)
 -- Owner: Yashvant A T K (ATK — Admin, Data & Documentation Lead)
@@ -36,7 +37,7 @@ JOIN Movie m ON m.movie_id = sh.movie_id
 JOIN Screen sc ON sc.screen_id = sh.screen_id
 JOIN Theatre th ON th.theatre_id = sc.theatre_id
 WHERE sh.movie_id = 1
-  AND sh.show_date = '2026-10-31'
+  AND sh.show_date = (CURRENT_DATE + 1)
 ORDER BY sh.start_time ASC;
 
 
@@ -284,7 +285,7 @@ SELECT
     SUM(b.total_amount) AS revenue
 FROM Booking b
 WHERE b.status = 'CONFIRMED'
-  AND (b.booking_time AT TIME ZONE 'Asia/Kolkata')::DATE >= DATE '2026-10-25'
+  AND (b.booking_time AT TIME ZONE 'Asia/Kolkata')::DATE >= (CURRENT_DATE - 7)
 GROUP BY (b.booking_time AT TIME ZONE 'Asia/Kolkata')::DATE
 ORDER BY sale_date ASC;
 
@@ -450,7 +451,7 @@ CREATE INDEX IF NOT EXISTS idx_show_date_movie ON Show (show_date, movie_id);
 EXPLAIN ANALYZE
 SELECT show_id, screen_id, start_time, end_time
 FROM Show
-WHERE show_date = '2026-10-31' AND movie_id = 1;
+WHERE show_date = (CURRENT_DATE + 1) AND movie_id = 1;
 
 
 -- ============================================================================
